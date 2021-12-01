@@ -106,14 +106,11 @@ def getNumberOfComparativeIncreases(listOfDepths: list) -> int:
     return increaseAmount
 
 def getNumberOfComparativeIncreasesBasedOnSlidingWindows(listOfDepths: list) -> int:
-    listToSum = []
     listOfSums = []
-    for depth in listOfDepths:
-        listToSum.append(depth)
-        if(len(listToSum) > 3):
-            listToSum.pop(0)
-        if(len(listToSum) == 3):
-            listOfSums.append(sum(listToSum))
+    length = len(listOfDepths)
+    for i in range(length):
+        if i >= 2:
+            listOfSums.append(listOfDepths[i] + listOfDepths[i - 1] + listOfDepths[i - 2])
     return getNumberOfComparativeIncreases(listOfSums)
 
 def main() -> int:
