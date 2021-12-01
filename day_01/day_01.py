@@ -84,33 +84,28 @@ Consider sums of a three-measurement sliding window. How many sums are larger th
 """
 
 from io import TextIOWrapper
+import sys
 
-
-def getFile(fileName = "testfile.txt"):
+def getFile(fileName = "testfile.txt") -> TextIOWrapper:
     loadedFile = open(fileName, "r")
     return loadedFile
 
-
-def closeFile(loadedFile: TextIOWrapper):
+def closeFile(loadedFile: TextIOWrapper) -> None:
     loadedFile.close()
 
-def convertFileToIntegerList(loadedFile: TextIOWrapper):
+def convertFileToIntegerList(loadedFile: TextIOWrapper) -> list:
     return [int(x) for x in loadedFile]
 
-def getNumberOfComparativeIncreases(listOfDepths: list):
-    previousNumber = -1
+def getNumberOfComparativeIncreases(listOfDepths: list) -> int:
+    previousDepth, *tailOfDepths = listOfDepths
     increaseAmount = 0
-    for depth in listOfDepths:
-        if(previousNumber == -1):
-            previousNumber = depth
-            continue
-        currentNumber = depth
-        if(currentNumber > previousNumber):
+    for depth in tailOfDepths:
+        if(depth > previousDepth):
             increaseAmount += 1
-        previousNumber = currentNumber
+        previousDepth = depth
     return increaseAmount
 
-def getNumberOfComparativeIncreasesBasedOnSlidingWindows(listOfDepths: list):
+def getNumberOfComparativeIncreasesBasedOnSlidingWindows(listOfDepths: list) -> int:
     listToSum = []
     listOfSums = []
     for depth in listOfDepths:
@@ -121,12 +116,13 @@ def getNumberOfComparativeIncreasesBasedOnSlidingWindows(listOfDepths: list):
             listOfSums.append(sum(listToSum))
     return getNumberOfComparativeIncreases(listOfSums)
 
+def main() -> int:
+    loadedFile = getFile("input")
+    convertedDepthList = convertFileToIntegerList(loadedFile)
+    print(getNumberOfComparativeIncreases(convertedDepthList))
+    print(getNumberOfComparativeIncreasesBasedOnSlidingWindows(convertedDepthList))
+    closeFile(loadedFile)
+    return 0
 
-
-loadedFile = getFile("input")
-
-convertedDepthList = convertFileToIntegerList(loadedFile)
-print(getNumberOfComparativeIncreases(convertedDepthList))
-print(getNumberOfComparativeIncreasesBasedOnSlidingWindows(convertedDepthList))
-
-closeFile(loadedFile)
+if __name__ == "__main__":
+    sys.exit(main())
