@@ -65,7 +65,6 @@ Using this new interpretation of the commands, calculate the horizontal position
 
 from io import TextIOWrapper
 import sys
-from typing_extensions import final
 from vpython.vector import vector
 
 def getFile(fileName = "testfile.txt") -> TextIOWrapper:
